@@ -1,8 +1,9 @@
+import RegisterForm from "./components/RegisterForm";
 
 function App() {
   return (
-    <div >
-      
+    <div className="flex justify-center items-center h-screen">
+      <RegisterForm />
     </div>
   );
 }
