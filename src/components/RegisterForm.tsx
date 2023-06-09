@@ -1,10 +1,9 @@
-import React from 'react'
-import FormComponent from './FormComponent'
+import FormComponent from './FormComponent';
 
 const RegisterForm = () => {
   return (
-    <div>
-        <FormComponent title='Register' buttonText='Create'/>
+    <div className="flex justify-center items-center">
+        <FormComponent title='Register' buttonText='Create' linkText='Already have an account?' path='/login'/>
     </div>
   )
 }
