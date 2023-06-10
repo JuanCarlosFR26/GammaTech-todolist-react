@@ -26,7 +26,11 @@ const Todolist = () => {
   }, [])
 
   return (
-    <div></div>
+    <div>
+      {
+        currentUser.id !== ''
+      }
+    </div>
   )
 }
 
