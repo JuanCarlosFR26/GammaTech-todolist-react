@@ -4,7 +4,7 @@ import { auth, db } from '../.firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { RegisterLoginProvider } from '../context/RegisterLoginContext';
-import { collection, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { UserProvider } from '../context/UserContext';
 import { Context } from 'vm';
 import ModalRegisterLogin from './ModalRegisterLogin';
@@ -25,19 +25,18 @@ const RegisterForm = () => {
     e.preventDefault();
     const usersRef = doc(db, 'users', currentUser.id);
     const usersSnap = await getDoc(usersRef);
+    // const q = query(collection(db, 'users'), where('id', "==", currentUser.id))
+    // const qSnapShot = await getDocs(q);
 
-    const q = query(collection(db, 'users'), where('id', "==", currentUser.id))
-    const qSnapShot = await getDocs(q);
+    // qSnapShot.forEach((doc) => {
+    //   setExistingUser(doc.id);
+    // })
 
-    qSnapShot.forEach((doc) => {
-      setExistingUser(doc.id);
-    })
-
-
-    if (usersSnap.exists() && existingUser) {
+    if (!usersSnap.exists()) {
       inputValues && await createUserWithEmailAndPassword(auth, inputValues.email, inputValues.password)
         .then((userCredentials) => {
           const user = userCredentials.user;
+          console.log(user);
           setDoc(doc(db, "users", user.uid), {
             email: user.email,
             id: user.uid,
