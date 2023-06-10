@@ -23,16 +23,14 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const usersRef = doc(db, 'users', currentUser.id);
-    const usersSnap = await getDoc(usersRef);
+    // const usersRef = doc(db, 'users', currentUser.id);
+    // const usersSnap = await getDoc(usersRef);
     // const q = query(collection(db, 'users'), where('id', "==", currentUser.id))
     // const qSnapShot = await getDocs(q);
 
     // qSnapShot.forEach((doc) => {
     //   setExistingUser(doc.id);
     // })
-
-    if (!usersSnap.exists()) {
       inputValues && await createUserWithEmailAndPassword(auth, inputValues.email, inputValues.password)
         .then((userCredentials) => {
           const user = userCredentials.user;
@@ -48,12 +46,11 @@ const RegisterForm = () => {
         })
 
       navigate('/login');
-    } else {
-      setModal(true)
-      setTimeout(() => {
-        setModal(false)
-      }, 3000)
-    }
+
+      // setModal(true)
+      // setTimeout(() => {
+      //   setModal(false)
+      // }, 3000)
   }
   return (
     <div className="flex justify-center items-center mt-40 flex-col">
