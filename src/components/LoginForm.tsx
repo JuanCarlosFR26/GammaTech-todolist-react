@@ -8,7 +8,7 @@ import ModalRegisterLogin from './ModalRegisterLogin';
 
 const LoginForm = () => {
 
-  const { setInputValues, inputValues } = useContext(RegisterLoginProvider);
+  const { inputValues } = useContext(RegisterLoginProvider);
 
   const [modal, setModal] = useState(false)
 

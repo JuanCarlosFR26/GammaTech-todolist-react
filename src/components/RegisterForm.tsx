@@ -25,7 +25,6 @@ const RegisterForm = () => {
     e.preventDefault();
     const usersRef = doc(db, 'users', currentUser.id);
     const usersSnap = await getDoc(usersRef);
-    console.log(usersSnap.data());
 
     const q = query(collection(db, 'users'), where('id', "==", currentUser.id))
     const qSnapShot = await getDocs(q);
