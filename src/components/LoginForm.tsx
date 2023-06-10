@@ -14,28 +14,27 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    inputValues && signInWithEmailAndPassword(auth, inputValues.email, inputValues.password)
-      .then((userCredentials) => {
-        const user = userCredentials.user
-      }).catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setModal(true)
-        setTimeout(() => {
-          setModal(false)
-        }, 3000)
-      })
+    try {
+      const response = inputValues && await signInWithEmailAndPassword(auth, inputValues.email, inputValues.password)
+      navigate('/')
+      return response?.user.uid
+    } catch (e) {
+      console.log((e as Error).message);
+      setModal(true)
+      setTimeout(() => {
+        setModal(false)
+      }, 3000)
 
-    navigate('/');
+    }
   }
 
   return (
-    <div className="flex justify-center items-center mt-40">
+    <div className="flex justify-center items-center mt-40 flex-col">
       <FormComponent onSubmit={handleSubmit} title='Log in' buttonText='Login' linkText="Don't have an account?" path='/register' />
       {
-        modal && <ModalRegisterLogin text='Invalid User' className='flex items-center justify-center bg-red-800 rounded-xl text-white font-bold' />
+        modal && <ModalRegisterLogin text='Invalid User' className='mt-4 p-4 flex items-center justify-center bg-red-800 rounded-xl text-white font-bold' />
       }
     </div>
   )

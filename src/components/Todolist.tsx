@@ -2,12 +2,15 @@ import { useContext, useEffect, useState } from 'react'
 import { Context, UserProvider } from '../context/UserContext'
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../.firebase/firebaseConfig';
+import ModalRegisterLogin from './ModalRegisterLogin';
 
 const Todolist = () => {
 
   const { currentUser } = useContext(UserProvider) as Context;
 
   const [todolist, setTodoList] = useState([])
+
+  const [modal, setModal] = useState(false);
 
   console.log(currentUser)
 
@@ -23,12 +26,16 @@ const Todolist = () => {
 
   useEffect(() => {
     getUser()
+    setModal(true);
+    setTimeout(() => {
+      setModal(false)
+    }, 3000)
   }, [])
 
   return (
     <div>
       {
-        currentUser.id !== ''
+        modal && <ModalRegisterLogin text={`Bienvenido ${currentUser.email}`} className='mt-4 p-4 flex items-center justify-center bg-green-500 rounded-xl text-white font-bold'/>
       }
     </div>
   )
