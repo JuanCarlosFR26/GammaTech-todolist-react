@@ -1,27 +1,47 @@
-import { createContext, useState } from 'react';
-import { FormRegister } from '../type';
+import { User, onAuthStateChanged } from 'firebase/auth';
+import { createContext, useState, useEffect } from 'react';
+import { auth } from '../.firebase/firebaseConfig';
 
 type Props = {
     children: React.ReactNode
 }
+interface CurrentUser {
+    email: string,
+    id: string
+}
 
-interface Context {
-    user: FormRegister,
-    setUser: React.Dispatch<React.SetStateAction<FormRegister>>
+export interface Context {
+    currentUser: CurrentUser,
+    setCurrentUser?: React.Dispatch<React.SetStateAction<CurrentUser>>
 }
 
 
-export const UserProvider = createContext<Context | null>(null);
+export const UserProvider = createContext({});
 
 const UserContext = ({ children }: Props) => {
 
-    const [user, setUser] = useState<FormRegister>({
+    const [currentUser, setCurrentUser] = useState<CurrentUser>({
         email: '',
-        password: ''
+        id: ''
     })
 
+    const getCurrentUser = () => {
+        onAuthStateChanged(auth, (user) => {
+            if(user) {
+                setCurrentUser({email: user.email, id: user.uid})
+                const uid = user.uid;
+            } else {
+                console.log('User not found');
+            }
+        })
+    }
+
+    useEffect(() => {
+        getCurrentUser();
+    }, [])
+
     return (
-        <UserProvider.Provider value={{ user, setUser }}>
+        <UserProvider.Provider value={{ currentUser, setCurrentUser }}>
             {children}
         </UserProvider.Provider>
     )

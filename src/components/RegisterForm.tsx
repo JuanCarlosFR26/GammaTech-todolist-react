@@ -1,9 +1,10 @@
 import FormComponent from './FormComponent';
 import { createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth'
-import { auth } from '../.firebase/firebaseConfig';
+import { auth, db } from '../.firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { RegisterLoginProvider } from '../context/RegisterLoginContext';
+import { doc, setDoc } from "firebase/firestore";
 
 const RegisterForm = () => {
 
@@ -15,7 +16,12 @@ const RegisterForm = () => {
     e.preventDefault();
     inputValues && createUserWithEmailAndPassword(auth, inputValues.email, inputValues.password)
       .then((userCredentials) => {
-        const user = userCredentials.user
+        const user = userCredentials.user;
+        setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          id: user.uid,
+          todos: []
+        })
       }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
