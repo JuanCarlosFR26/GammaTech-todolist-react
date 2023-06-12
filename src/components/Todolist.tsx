@@ -5,6 +5,7 @@ import { auth, db } from '../.firebase/firebaseConfig';
 import ModalRegisterLogin from './ModalRegisterLogin';
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import Todotask from './Todotask';
 
 const Todolist = () => {
 
@@ -112,6 +113,16 @@ const Todolist = () => {
           }
         </div>
       }
+      <hr className='mt-10'></hr>
+      <div className='mt-10 flex p-10 gap-20'>
+        {
+          todolist && todolist.map((task, i) => (
+            <div>
+              <Todotask cssPriority={`${task.priority === 'low' ? 'bg-green-200' : (task.priority === 'medium') ? 'bg-orange-200' : 'bg-pink-700'}`} key={i} title={task.todo} priority={task.priority} tag={task.tag} deadline={task.deadline} />
+            </div>
+          ))
+        }
+      </div>
     </div>
   )
 }
