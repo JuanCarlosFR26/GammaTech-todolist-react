@@ -37,7 +37,10 @@ const Todolist = () => {
       await updateDoc(docRef, {
         todos: [...todolist, formValues]
       })
+      setTodoList([...todolist, formValues]);
     }
+
+    console.log(todolist);
 
 
   }
@@ -48,6 +51,10 @@ const Todolist = () => {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setTodoList(docSnap.data().todos)
+        // setModal(true);
+        // setTimeout(() => {
+        //   setModal(false)
+        // }, 3000)
       }
     }
   }
@@ -62,10 +69,6 @@ const Todolist = () => {
   useEffect(() => {
     if (currentUser.id) {
       getUser()
-      setModal(true);
-      setTimeout(() => {
-        setModal(false)
-      }, 3000)
     } else {
       navigate('/login')
     }
@@ -80,31 +83,33 @@ const Todolist = () => {
       }
       {
         (currentUser.id) && <div>
-          <form onSubmit={handleSubmit}>
-            <div>
+          <form className='flex flex-col items-center gap-4' onSubmit={handleSubmit}>
+            <div className='flex flex-col items-center gap-2'>
               <label htmlFor='todo'>Insert Todo:</label>
-              <input onChange={handleChange} type='text' name='todo' />
+              <input className='border outline-none pl-4 h-8 rounded-xl' onChange={handleChange} type='text' name='todo' />
             </div>
-            <div>
+            <div className='flex flex-col items-center'>
               <label htmlFor='priority'>Priority:</label>
-              <select onChange={handleChange} name='priority'>
+              <select className='border outline-none h-8 rounded-xl' onChange={handleChange} name='priority'>
                 <option value={''} disabled selected></option>
                 <option value={'low'}>Low</option>
                 <option value={'medium'}>Medium</option>
                 <option value={'high'}>High</option>
               </select>
             </div>
-            <div>
+            <div className='flex flex-col items-center gap-2'>
               <label htmlFor='deadline'>Deadline:</label>
-              <input onChange={handleChange} type='date' name='deadline' />
+              <input className='border outline-none pl-4 h-8 rounded-xl' onChange={handleChange} type='date' name='deadline' />
             </div>
-            <div>
+            <div className='flex flex-col items-center'>
               <label htmlFor='tag'>Tag:</label>
-              <input onChange={handleChange} type='text' name='tag' />
+              <input className='border outline-none pl-4 h-8 rounded-xl' onChange={handleChange} type='text' name='tag' />
             </div>
-            <input type='submit' value={'Create'} />
+            <input className='border p-4 rounded-xl font-bold bg-cyan-800 text-white cursor-pointer hover:bg-cyan-400 hover:text-black' type='submit' value={'Create'} />
           </form>
-          <button onClick={() => disconect()}>Log out</button>
+          {
+            currentUser && <button className='absolute top-6 right-12 border p-2 rounded-xl hover:bg-pink-950 hover:text-white font-bold bg-pink-600' onClick={() => disconect()}>Log out</button>
+          }
         </div>
       }
     </div>
