@@ -30,6 +30,7 @@ const Todolist = () => {
     }))
   }
 
+  // Cambiar los "e" por "event"
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (currentUser) {
@@ -46,6 +47,7 @@ const Todolist = () => {
 
   }
 
+  // Definir de forma externa en carpeta utils y exportarlo
   const getUser = async () => {
     if (currentUser) {
       const docRef = doc(db, "users", currentUser.id);
